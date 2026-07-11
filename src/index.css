@@ -222,6 +222,17 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 0 15px rgba(228, 110, 20, 0.1);
 }
 
+.btn-outline-dark {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  border: 1px solid var(--color-border);
+}
+
+.btn-outline-dark:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--color-accent);
+}
+
 /* Marquee / Stocks Ticker */
 .ticker-container {
   background: rgba(20, 16, 11, 0.8);

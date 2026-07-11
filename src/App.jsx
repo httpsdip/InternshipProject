@@ -675,8 +675,8 @@ function App() {
                           Buy 💰
                         </button>
                         <button 
-                          className="btn" 
-                          style={{ padding: '0.4rem 0.6rem', fontSize: '0.7rem', borderRadius: '8px', border: '1px solid var(--color-border)', color: '#fff', display: 'flex', gap: '0.1rem', alignItems: 'center' }}
+                          className="btn btn-outline-dark" 
+                          style={{ padding: '0.4rem 0.6rem', fontSize: '0.7rem', borderRadius: '8px', gap: '0.1rem', display: 'flex', alignItems: 'center' }}
                           onClick={() => openPanel('riskAnalysis', fund)}
                         >
                           <span>🤖</span> AI Suitability
