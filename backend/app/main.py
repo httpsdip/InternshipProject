@@ -1,6 +1,8 @@
 import jwt
 import hashlib
 import secrets
+import requests
+import xml.etree.ElementTree as ET
 from fastapi import FastAPI, Query, HTTPException, Depends, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
@@ -296,13 +298,54 @@ def sell_fund(holding_id: int, user_id: int = Depends(get_current_user_id)):
     conn.close()
     return {"status": "success", "message": "Holding sold successfully."}
 
+def sync_live_news():
+    rss_url = "https://news.google.com/rss/search?q=mutual+funds+india&hl=en-IN&gl=IN&ceid=IN:en"
+    try:
+        res = requests.get(rss_url, timeout=5)
+        if res.status_code == 200:
+            root = ET.fromstring(res.content)
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            
+            for item in root.findall(".//item")[:12]:
+                title = item.find("title").text if item.find("title") is not None else "Financial News Update"
+                title = title.split(" - ")[0] if " - " in title else title
+                link = item.find("link").text if item.find("link") is not None else ""
+                pub_date = item.find("pubDate").text if item.find("pubDate") is not None else "Today"
+                
+                cursor.execute("SELECT id FROM news WHERE title = ?", (title,))
+                if cursor.fetchone():
+                    continue
+                
+                content = f"Real-time market tracking. Live article links: {link}"
+                category = "Mutual Funds"
+                
+                if pub_date and " " in pub_date:
+                    try:
+                        parts = pub_date.split(" ")
+                        pub_date = f"{parts[1]} {parts[2]} {parts[3]}"
+                    except:
+                        pass
+                
+                cursor.execute(
+                    "INSERT INTO news (title, content, category, published_at) VALUES (?, ?, ?, ?)",
+                    (title, content, category, pub_date)
+                )
+            
+            conn.commit()
+            conn.close()
+    except Exception as e:
+        print(f"Error syncing RSS Google News: {e}")
+
 # 5. MARKET NEWS & AI SIGNAL RECOMMENDATIONS
 @app.get("/api/news")
 def get_news(user_id: int = Depends(get_current_user_id)):
-    """Fetch seeded market news updates."""
+    """Fetch live and seeded market news updates."""
+    sync_live_news()
+    
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT id, title, content, category, published_at FROM news ORDER BY id DESC")
+    cursor.execute("SELECT id, title, content, category, published_at FROM news ORDER BY id DESC LIMIT 15")
     rows = cursor.fetchall()
     conn.close()
     
