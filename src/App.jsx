@@ -563,7 +563,7 @@ function App() {
               <ul className="sidebar-menu">
                 <li>
                   <button 
-                    className={`sidebar-btn ${activeTab === 'explore' && (!isPanelOpen || (panelType !== 'about' && panelType !== 'chat')) ? 'active' : ''}`}
+                    className={`sidebar-btn ${activeTab === 'explore' && (!isPanelOpen || panelType !== 'chat') ? 'active' : ''}`}
                     onClick={() => { setActiveTab('explore'); setSearchQuery(''); setActiveCategory('All'); setIsPanelOpen(false); }}
                   >
                     <span>🏠</span> Home
@@ -585,14 +585,7 @@ function App() {
                     <span>📰</span> AI Signals News
                   </button>
                 </li>
-                <li>
-                  <button 
-                    className={`sidebar-btn ${isPanelOpen && panelType === 'about' ? 'active' : ''}`}
-                    onClick={() => openPanel('about')}
-                  >
-                    <span>ℹ️</span> About Platform
-                  </button>
-                </li>
+
                 <li>
                   <button 
                     className={`sidebar-btn ${isPanelOpen && panelType === 'chat' ? 'active' : ''}`}
@@ -1022,7 +1015,6 @@ function App() {
               {panelType === 'compare' && 'Compare Mutual Funds'}
               {panelType === 'riskAnalysis' && 'Gemini AI Risk Suitability'}
               {panelType === 'buy' && 'Invest in Mutual Fund'}
-              {panelType === 'about' && 'About Platform'}
               {panelType === 'chat' && 'AI Chatbot 💬'}
             </h2>
             <button className="panel-close-btn" onClick={() => setIsPanelOpen(false)}>
@@ -1075,43 +1067,7 @@ function App() {
             </form>
           )}
 
-          {/* PANEL TYPE: ABOUT THE PLATFORM */}
-          {panelType === 'about' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', fontSize: '0.85rem', lineHeight: '1.6', color: 'var(--color-secondary)' }}>
-              <div style={{ background: 'rgba(228, 110, 20, 0.05)', padding: '1.25rem', borderRadius: '16px', border: '1px solid rgba(228, 110, 20, 0.2)', textAlign: 'center' }}>
-                <h3 style={{ color: 'var(--color-accent)', fontSize: '1.2rem', marginBottom: '0.5rem' }}>AI Mutual Fund Analyzer 🤖</h3>
-                <span style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Version 2.0 • Full-Stack Premium Edition</span>
-              </div>
 
-              <p>
-                Yeh ek state-of-the-art wealth management platform hai jo Indian retail investors ko simple Hinglish financial advisor reports aur live market feeds ki help se smarter investments choose karne mein help karta hai.
-              </p>
-
-              <h4 style={{ color: '#fff', fontSize: '0.9rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.4rem', marginTop: '0.5rem' }}>Key Architectural Pillars:</h4>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)', borderRadius: '12px', padding: '1rem' }}>
-                  <h5 style={{ color: '#fff', marginBottom: '0.25rem', fontSize: '0.8rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>⚡ Live AMFI Scraper</h5>
-                  <p style={{ margin: 0, fontSize: '0.75rem' }}>Hum direct amfiindia.com se raw text NAV feeds fetch karte hain. Direct plan and Growth option funds scrape hote hain taaki commission margins transparent rahein.</p>
-                </div>
-
-                <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)', borderRadius: '12px', padding: '1rem' }}>
-                  <h5 style={{ color: '#fff', marginBottom: '0.25rem', fontSize: '0.8rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>📂 Local SQLite Portfolio Sync</h5>
-                  <p style={{ margin: 0, fontSize: '0.75rem' }}>Aapka personal portfolio SQLite backend DB se linked hai. Har buy/sell transaction secure JWT key authorization ke under DB tables mein update hota hai.</p>
-                </div>
-
-                <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)', borderRadius: '12px', padding: '1rem' }}>
-                  <h5 style={{ color: '#fff', marginBottom: '0.25rem', fontSize: '0.8rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>🤖 Gemini AI Hinglish Advisor</h5>
-                  <p style={{ margin: 0, fontSize: '0.75rem' }}>Gemini LLM system se linked hai. Aapka age, horizon, aur investment goals analyze karke yeh recommendations pure simple Hinglish (ye le sakte ho / nehi le sakte) mein banata hai.</p>
-                </div>
-
-                <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)', borderRadius: '12px', padding: '1rem' }}>
-                  <h5 style={{ color: '#fff', marginBottom: '0.25rem', fontSize: '0.8rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>📈 SIP & Lumpsum Calculator</h5>
-                  <p style={{ margin: 0, fontSize: '0.75rem' }}>Investment compound calculations handle karta hai, jisse dynamic graphs aur metrics easily estimate ho sakein.</p>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* PANEL TYPE: AI CHATBOX */}
           {panelType === 'chat' && (
